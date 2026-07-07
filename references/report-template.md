@@ -28,6 +28,25 @@
 ## 架构 / 笔记（可选）
 <图示、模块地图、数据流笔记，或其他值得长期保留的上下文。>
 
+如果涉及调用路径，可以考虑下面这种模式：
+```
+virtio_pci_probe(pci_dev)                              // pci_device结构体
+  vp_dev = alloc(s virtio_pci_device) <-------------------------------------------------------- alloc virtio_pci_device
+  pci_set_drvdata(pci_dev, vp_dev)                     // 将virtio_pci_device关联到pci_device->device->driver_data中
+    pci_dev->dev->driver_data = vp_dev
+  vp_dev->pci_dev = pci_dev                            // 将pci_device关联到virtio_pci_device中
+  pci_enable_device(pci_dev)
+  virtio_pci_modern_probe(vp_dev)                      // 映射、读取virtio pci设备在bar空间中的各种features
+    virtio_pci_find_capability                         // 返回各种capability链表结构在配置空间中的偏移
+      pci_find_capability
+        __pci_bus_find_cap_start
+        __pci_find_next_cap
+    map_capability
+    virtio_pci_device.virtio_device.config = virtio_pci_config_ops
+  register_virtio_device(&vp_dev->vdev)                // 注册struct virtio_device
+    trigger virtio_driver.probe
+```
+
 ## 分析日志
 <按时间顺序。每个不同的问题一条。只追加；除纠错外不改写过往条目。>
 
