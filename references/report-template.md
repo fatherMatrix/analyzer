@@ -28,7 +28,25 @@
 ## 架构 / 笔记（可选）
 <图示、模块地图、数据流笔记，或其他值得长期保留的上下文。>
 
-如果涉及调用路径，可以考虑下面这种模式：
+**图示优先用 mermaid**（流程图、调用图、时序图、状态机、依赖图等），以便在 GitHub /
+VS Code / Typora 等渲染器中直接渲染成图。图类型选择、各图示例与渲染注意事项见
+`references/mermaid-cheatsheet.md`。
+
+如果涉及调用路径，首选把它画成 mermaid 流程图（框架）或时序图（交互先后）：
+
+```mermaid
+flowchart TD
+    A["virtio_pci_probe(pci_dev)"] --> B["alloc(virtio_pci_device)"]
+    A --> C["pci_set_drvdata<br/>关联 vp_dev 到 pci_dev"]
+    A --> D["virtio_pci_modern_probe(vp_dev)<br/>映射并读取 features"]
+    D --> E["virtio_pci_find_capability<br/>返回 capability 偏移"]
+    D --> F["register_virtio_device<br/>触发 virtio_driver.probe"]
+    B -. "alloc" .-> A
+```
+
+当需要**逐行 `//` 注释的密集调用追踪**时，缩进字符树作为补充仍然好用
+（信息密度高，能同时呈现层级、注释与数据流）：
+
 ```
 virtio_pci_probe(pci_dev)                              // pci_device结构体
   vp_dev = alloc(s virtio_pci_device) <-------------------------------------------------------- alloc virtio_pci_device
@@ -50,6 +68,7 @@ virtio_pci_probe(pci_dev)                              // pci_device结构体
 请注意，如果要求结合源码分析，则尽量结合代码调用图来解释。可以代码框架用调用图，细节单独拎出来讲。
 - 用代码调用图的意图是让看报告的人有一个清晰的逻辑框架。如果直接讲细节，很容易迷失。切记！
 
+经验法则：**框架用 mermaid，逐行细节用字符树**，两者可在同一份报告里配合使用。
 代码调用图可以按照你的方式来美化，但调用流程一定要留。
 
 ## 分析日志

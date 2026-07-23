@@ -88,6 +88,7 @@ git rev-parse HEAD                 # 当前 commit 完整哈希
 - 只引用*相关*的几行代码，不要贴整个文件。
 - 优先给出具体证据（文件、函数、行号），而非笼统总结。
 - 在报告靠前处维护一节 `## 摘要 / 关键发现`，随着理解加深持续更新。
+- **图示优先用 mermaid**（流程图 / 调用图 / 时序图 / 状态机 / 依赖图），让读者先看到清晰的逻辑框架；需要逐行 `//` 注释的密集调用追踪可用字符缩进树作为补充。图类型选择与示例见 `references/mermaid-cheatsheet.md`。
 
 ## 报告骨架（速查）
 
@@ -126,8 +127,9 @@ git rev-parse HEAD                 # 当前 commit 完整哈希
 7. **证据优先于断言。** 用 `文件:行号` 和代码片段支撑发现。
 8. **不臆造。** 不确定或未经验证的内容，在报告里如实标注。
 
-更完整的模板见 `references/report-template.md`；非破坏性 git 命令见 `references/git-cheatsheet.md`。
+更完整的模板见 `references/report-template.md`；非破坏性 git 命令见 `references/git-cheatsheet.md`；mermaid 图示用法见 `references/mermaid-cheatsheet.md`。
 
 ## 注意点
 
 1. 对于某些markdown阅读器，其表格需要前后有一个空行，否则无法渲染为表格。因此在输出中包含表格时，记得前后加一个空行
+2. mermaid 图示必须写在独立的 ` ```mermaid ` 围栏里，且围栏前后各留一个空行。部分渲染器不支持 mermaid、会原样显示源码，因此关键图应在附近保留一句文字概述或字符调用树以便降级阅读；详见 `references/mermaid-cheatsheet.md`。
