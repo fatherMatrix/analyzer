@@ -127,3 +127,7 @@ git rev-parse HEAD                 # 当前 commit 完整哈希
 8. **不臆造。** 不确定或未经验证的内容，在报告里如实标注。
 
 更完整的模板见 `references/report-template.md`；非破坏性 git 命令见 `references/git-cheatsheet.md`。
+
+## 注意点
+
+1. 对于某些markdown阅读器，其表格需要前后有一个空行，否则无法渲染为表格。因此在输出中包含表格时，记得前后加一个空行
